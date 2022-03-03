@@ -10,8 +10,21 @@ object BestTimeBuySellStock extends TestMixin {
     Solution.maxProfit(Array(1))
   }
 }
-
 object Solution {
+  def maxProfit(prices: Array[Int]): Int = {
+    var minPrice : Int = Int.MaxValue
+    var profit: Int = 0
+    for(i <- 0 to prices.length-1){
+      if(prices(i) < minPrice){
+        minPrice = prices(i)
+      } else if( prices(i) - minPrice > profit){
+        profit = prices(i) - minPrice
+      }
+    }
+    profit
+  }
+}
+object Solution2 {
   def maxProfit(prices: Array[Int]): Int = {
     if(prices.length == 1) return 0
     val dpMemo = scala.collection.mutable.Map[(Int,Int),Int]()
@@ -29,7 +42,7 @@ object Solution {
         }
         dpMemo +=  ((buyDay,sellDay) -> maxP )
       }
-      println(dpMemo.size)
+      println((buyDay,sellDay)+"->"+ dpMemo.size)
       dpMemo((buyDay,sellDay))
     }
     dp(prices.length - 2, prices.length - 1)

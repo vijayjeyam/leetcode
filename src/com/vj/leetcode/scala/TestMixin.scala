@@ -27,3 +27,24 @@ trait TestMixin extends App{
   }
 
 }
+case class Node[T](cont: T, var next: Node[T] = null)
+
+object Node {
+  @tailrec
+  def reverse[T](node:Node[T], tempNode:Node[T]=null) : Node[T] = {
+    if(node == null) return tempNode
+    val toProcess= node.next
+    node.next = tempNode
+    reverse(toProcess, node)
+  }
+  def apply[T](seq: Seq[T]): Node[T] = {
+    if(seq.isEmpty)return null
+    val head = Node(seq.head)
+    seq.tail.foldLeft(head)(
+      (head, elem) => {
+        head.next = Node(elem)
+        head.next }
+    )
+    head
+  }
+}
